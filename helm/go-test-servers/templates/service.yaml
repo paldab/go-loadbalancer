@@ -1,0 +1,19 @@
+{{- range $index, $server := .Values.servers }}
+---
+apiVersion: v1
+kind: Service
+metadata: {{ $fullname := printf "%s-%s-%s" "test-server" ($server.port | toString) ($index | toString) | trunc 63 | trimSuffix "-" }}
+  name: {{ $fullname }}
+  labels:
+    index: "{{ $index  | toString}}"
+    port: "{{ $server.port | toString }}"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: {{ $server.port | int }}
+    protocol: TCP
+    name: {{ $fullname }}
+  selector:
+    app: {{ $fullname }}
+{{- end }}

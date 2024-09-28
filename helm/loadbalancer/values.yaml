@@ -1,0 +1,21 @@
+loadbalancer:
+  image: paer12/go-loadbalancer:0.1.0
+  replicas: 1
+  strategy: ROUND_ROBIN # ROUND_ROBIN or RANDOM
+  enableHealthCheck: true
+
+CRDs:
+  install: true
+  keep: true
+
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+serviceAccount:
+  create: true
+  automount: true

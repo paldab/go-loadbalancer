@@ -1,0 +1,6 @@
+namespace: test-servers
+servers:
+- port: 3001
+- port: 3002
+- port: 3003
+- port: 3004

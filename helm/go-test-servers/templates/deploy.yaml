@@ -1,0 +1,29 @@
+{{- range $index, $server := .Values.servers }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {{ $fullname := printf "%s-%s-%s" "test-server" ($server.port | toString) ($index | toString) | trunc 63 | trimSuffix "-" }}
+  name: {{ $fullname }}
+  labels:
+    index: "{{ $index  | toString}}"
+    port: "{{ $server.port | toString }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ $fullname }}
+  replicas: {{ include "go-test-servers.replicas" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ $fullname }}
+    spec:
+      containers:
+      - name: {{ $fullname }}
+        image: {{ include "go-test-servers.image" . }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ $server.port | int }}
+        env:
+        - name: PORT
+          value: "{{ $server.port | toString }}"
+{{- end }}

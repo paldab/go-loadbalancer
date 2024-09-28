@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: paldap-go-loadbalancer
+  labels:
+      {{- include "paldab-loadbalancer.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+        {{- include "paldab-loadbalancer.selectorLabels" . | nindent 6 }}
+  replicas: {{ default 1 .Values.loadbalancer.replicas | int }}
+  template:
+    metadata:
+      labels:
+          {{- include "paldab-loadbalancer.labels" . | nindent 8 }}
+    spec:
+      serviceAccount: {{ include "paldab-loadbalancer.serviceAccountName" . }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.loadbalancer.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ENABLE_HEALTHCHECK
+          valueFrom:
+            configMapKeyRef:
+                name: lb-config
+                key: ENABLE_HEALTHCHECK
+        - name: STRATEGY
+          valueFrom:
+            configMapKeyRef:
+              name: lb-config
+              key: STRATEGY
+        resources:
+          {{ toYaml .Values.resources | indent 10 }}

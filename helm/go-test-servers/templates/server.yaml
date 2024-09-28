@@ -1,0 +1,14 @@
+{{- range $index, $server := .Values.servers }}
+---
+{{ $fullname := printf "%s-%s-%s" "test-server" ($server.port | toString) ($index | toString) | trunc 63 | trimSuffix "-" }}
+{{- $namespace := "test-servers" }}
+{{- if .Release }}
+  {{- $namespace = .Release.Namespace }}
+{{- end }}
+apiVersion: loadbalancer.paldab.io/v1alpha1
+kind: Server
+metadata:
+  name: {{ $fullname }}
+spec:
+  url: {{ printf "http://%s.%s.svc.cluster.local" ($fullname) ($namespace) }}
+{{- end }}

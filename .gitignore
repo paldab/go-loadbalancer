@@ -1,0 +1,48 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the go command
+bin/
+build/
+*.o
+*.a
+
+# Go test binary and coverage reports
+*.test
+*.coverprofile
+*.cov
+*.coverage
+coverage.out
+
+# Dependency directories (vendor/ for projects using Go modules)
+vendor/
+Gopkg.lock
+Gopkg.toml
+
+# Go module files
+go.sum
+
+# IDE or Editor configurations
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker files
+docker-compose.override.yml
+
+servers.yaml
+todo.md

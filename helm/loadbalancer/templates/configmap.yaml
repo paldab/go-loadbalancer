@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: lb-config
+  annotations:
+    helm.sh/hook: pre-install
+data:
+  ENABLE_HEALTHCHECK: {{ .Values.loadbalancer.enableHealthCheck | quote }}
+  STRATEGY: {{ .Values.loadbalancer.strategy }}
